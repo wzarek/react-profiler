@@ -2,18 +2,18 @@ import React, { ReactElement, Component } from 'react';
 
 type ErrorInfo = {
   componentStack: string;
-}
+};
 
 type ErrorBoundaryProps = {
   children: ReactElement;
   fallback?: ReactElement;
   onError?: (error: Error, info: ErrorInfo) => void;
-}
+};
 
 type ErrorBoundaryState = {
   hasError: boolean;
   errorInfo: Error | null;
-}
+};
 
 class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
   constructor(props: ErrorBoundaryProps) {

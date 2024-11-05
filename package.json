@@ -5,6 +5,12 @@
   "author": "Maciej Krawczyk",
   "license": "MIT",
   "private": true,
+  "scripts": {
+    "lint": "yarn workspaces run lint",
+    "lint:fix": "yarn workspaces run lint:fix",
+    "build": "yarn workspaces run build",
+    "test": "yarn workspaces run test"
+  },
   "workspaces": [
     "packages/*"
   ]
