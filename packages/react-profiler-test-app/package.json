@@ -14,7 +14,7 @@
   "dependencies": {
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-live-profiling-tool": "workspaces:*"
+    "react-live-profiling-tool": "*"
   },
   "devDependencies": {
     "@eslint/js": "^9.11.1",
