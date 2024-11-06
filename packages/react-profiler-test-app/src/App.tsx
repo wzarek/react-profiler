@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import ErrorThrower from './components/errors/ErrorThrower'
-import { ErrorBoundary } from 'react-live-profiling-tool';
+import { ErrorBoundary, GlobalPropsMonitor } from 'react-live-profiling-tool';
 import ErrrorFallback from './components/shared/ErrrorFallback';
 import SlowRender from './components/errors/SlowRender';
 import LargeRender from './components/errors/LargeRender';
@@ -13,9 +13,10 @@ function App() {
 
   return (
     <ErrorBoundary
-      fallback={<ErrrorFallback />}
-      onError={(error,info) => window.alert(`Error: ${error.message}\nStack: ${info.componentStack}`)}
+    fallback={<ErrrorFallback />}
+    onError={(error,info) => window.alert(`Error: ${error.message}\nStack: ${info.componentStack}`)}
     >
+      <GlobalPropsMonitor>
       <>
         <button onClick={() => setErrorType("ErrorThrower")}>
           Click to show error
@@ -34,6 +35,7 @@ function App() {
         {errorType === "LargeRender" && <LargeRender />}
         {errorType === "SlowRender" && <SlowRender />}
       </>
+    </GlobalPropsMonitor>
     </ErrorBoundary>
   )
 }

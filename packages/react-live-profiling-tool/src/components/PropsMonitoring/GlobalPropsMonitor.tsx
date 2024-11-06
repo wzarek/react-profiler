@@ -8,7 +8,7 @@ import React, {
 import { PropsWithChildren } from 'react';
 import { Monitor } from './Monitor';
 
-const GlobalMonitor: FC<PropsWithChildren> = ({ children }) => {
+const GlobalPropsMonitor: FC<PropsWithChildren> = ({ children }) => {
   const handleRender = (id: string, phase: string, actualDuration: number) => {
     console.log(
       `[Profiler] Component ${id} rendered in ${actualDuration.toFixed(
@@ -22,9 +22,7 @@ const GlobalMonitor: FC<PropsWithChildren> = ({ children }) => {
     duration: number
   ) => {
     console.log(
-      `[Profiler] Props changed: ${JSON.stringify(
-        propsChange
-      )} in ${duration.toFixed(2)} ms`
+      `[Profiler] Props changed:`, propsChange ,`in ${duration.toFixed(2)} ms`
     );
   };
 
@@ -54,4 +52,4 @@ const GlobalMonitor: FC<PropsWithChildren> = ({ children }) => {
   return <>{traverseAndWrap(children)}</>;
 };
 
-export { GlobalMonitor };
+export { GlobalPropsMonitor };
