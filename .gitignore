@@ -4,3 +4,16 @@
 **/.cache
 **/dist
 *.tsbuildinfo
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.pyd
+*.log
+
+# Virtual environments
+venv/
+.env
+*.env
