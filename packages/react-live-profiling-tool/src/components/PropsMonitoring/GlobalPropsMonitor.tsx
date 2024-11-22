@@ -22,7 +22,9 @@ const GlobalPropsMonitor: FC<PropsWithChildren> = ({ children }) => {
     duration: number
   ) => {
     console.log(
-      `[Profiler] Props changed:`, propsChange ,`in ${duration.toFixed(2)} ms`
+      `[Profiler] Props changed:`,
+      propsChange,
+      `in ${duration.toFixed(2)} ms`
     );
   };
 
