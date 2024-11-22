@@ -4,6 +4,10 @@ jobs:
   build:
     name: Build, lint, and test on Node 18 and ${{ matrix.os }}
 
+    defaults:
+      run:
+        working-directory: frontend
+
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -19,7 +23,7 @@ jobs:
           node-version: 18
 
       - name: Install deps and build (with cache)
-        uses: bahmutov/npm-install@v1
+        run: yarn install --immutable
 
       - name: Lint
         run: yarn lint
