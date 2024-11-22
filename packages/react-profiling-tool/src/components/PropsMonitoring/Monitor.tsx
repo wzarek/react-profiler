@@ -34,7 +34,6 @@ const Monitor: FC<MonitorProps> = ({
                 from: previousProps.current.props[key],
                 to: child.props[key],
               };
-              console.log(change);
               onRenderData(change, performance.now() - startRender.current);
             }
           });
