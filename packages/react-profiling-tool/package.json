@@ -34,16 +34,16 @@
     "singleQuote": true,
     "trailingComma": "es5"
   },
-  "name": "react-live-profiling-tool",
+  "name": "react-profiling-tool",
   "author": "Maciej Krawczyk",
-  "module": "dist/react-live-profiling-tool.esm.js",
+  "module": "dist/react-profiling-tool.esm.js",
   "size-limit": [
     {
-      "path": "dist/react-live-profiling-tool.cjs.production.min.js",
+      "path": "dist/react-profiling-tool.cjs.production.min.js",
       "limit": "10 KB"
     },
     {
-      "path": "dist/react-live-profiling-tool.esm.js",
+      "path": "dist/react-profiling-tool.esm.js",
       "limit": "10 KB"
     }
   ],

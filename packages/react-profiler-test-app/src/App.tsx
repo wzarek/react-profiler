@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import ErrorThrower from './components/errors/ErrorThrower'
-import { ErrorBoundary, GlobalPropsMonitor } from 'react-live-profiling-tool';
+import { ErrorBoundary, GlobalPropsMonitor } from 'react-profiling-tool';
 import ErrrorFallback from './components/shared/ErrrorFallback';
 import SlowRender from './components/errors/SlowRender';
 import LargeRender from './components/errors/LargeRender';
