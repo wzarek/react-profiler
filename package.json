@@ -12,6 +12,7 @@
     "test": "yarn workspaces run test"
   },
   "workspaces": [
-    "packages/*"
+    "packages/react-profiling-tool",
+    "packages/react-profiler-test-app"
   ]
 }

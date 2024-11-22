@@ -4,9 +4,9 @@ const SlowRender = () => {
   const [data, setData] = useState<string | null>(null);
 
   useEffect(() => {
-    const randomDelay = Math.floor(Math.random() * 100000) + 1000;
+    const randomDelay = Math.floor(Math.random() * 10000) + 1000;
     const timer = setTimeout(() => {
-      setData(`Dane załadowane po ${randomDelay} sekundach!`);
+      setData(`Dane załadowane po ${randomDelay / 1000} sekundach!`);
     }, randomDelay);
     
     return () => clearTimeout(timer);
