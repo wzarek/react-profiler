@@ -1,9 +1,5 @@
 const ErrrorFallback = () => {
-  return (
-    <div style={{color: "red"}}>
-      Error!
-    </div>
-  )
-}
+  return <div className="text-red-500">Error!</div>;
+};
 
-export default ErrrorFallback
+export default ErrrorFallback;
