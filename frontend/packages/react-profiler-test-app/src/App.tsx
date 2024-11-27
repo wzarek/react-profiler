@@ -1,43 +1,54 @@
-import { useState } from 'react'
-import ErrorThrower from './components/errors/ErrorThrower'
-import { ErrorBoundary, GlobalPropsMonitor } from 'react-profiling-tool';
-import ErrrorFallback from './components/shared/ErrrorFallback';
-import SlowRender from './components/errors/SlowRender';
-import LargeRender from './components/errors/LargeRender';
-import InfiniteLoop from './components/errors/InfiniteLoop';
+import React from "react";
+import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import TodoList from "./pages/TodoList";
+import AddTodo from "./pages/AddTodo";
+import { ErrorBoundary, GlobalPropsMonitor } from "react-profiling-tool";
+import ErrrorFallback from "./components/shared/ErrrorFallback";
 
-type ErrorComponentType = "InfiniteLoop" | "ErrorThrower" | "LargeRender" | "SlowRender";
+const App: React.FC = () => (
+  <Router>
+    <div className="p-4 bg-slate-900 min-w-screen min-h-screen text-white">
+      <div className="w-1/2 mx-auto">
+        <nav className="mb-4 flex space-x-4">
+          <Link to="/" className="text-blue-500 hover:underline">
+            Todo List
+          </Link>
+          <Link to="/add" className="text-blue-500 hover:underline">
+            Add Todo
+          </Link>
+        </nav>
+        <main>
+          <ErrorBoundary
+            fallback={<ErrrorFallback />}
+            onError={(error, info) =>
+              window.alert(
+                `Error: ${error.message}\nStack: ${info.componentStack}`
+              )
+            }
+          >
+            <Routes>
+              <Route
+                path="/"
+                element={
+                  <GlobalPropsMonitor>
+                    <TodoList />
+                  </GlobalPropsMonitor>
+                }
+              />
+              <Route
+                path="/add"
+                element={
+                  <GlobalPropsMonitor>
+                    <AddTodo />
+                  </GlobalPropsMonitor>
+                }
+              />
+            </Routes>
+          </ErrorBoundary>
+        </main>
+      </div>
+    </div>
+  </Router>
+);
 
-function App() {
-  const [errorType, setErrorType] = useState<ErrorComponentType | undefined>(undefined)
-
-  return (
-    <ErrorBoundary
-    fallback={<ErrrorFallback />}
-    onError={(error,info) => window.alert(`Error: ${error.message}\nStack: ${info.componentStack}`)}
-    >
-      <GlobalPropsMonitor>
-      <>
-        <button onClick={() => setErrorType("ErrorThrower")}>
-          Click to show error
-        </button>
-        <button onClick={() => setErrorType("InfiniteLoop")}>
-          Click to do infinite loop
-        </button>
-        <button onClick={() => setErrorType("LargeRender")}>
-          Click to make large render
-        </button>
-        <button onClick={() => setErrorType("SlowRender")}>
-          Click to make slow render
-        </button>
-        {errorType === "ErrorThrower" && <ErrorThrower />}
-        {errorType === "InfiniteLoop" && <InfiniteLoop />}
-        {errorType === "LargeRender" && <LargeRender />}
-        {errorType === "SlowRender" && <SlowRender />}
-      </>
-    </GlobalPropsMonitor>
-    </ErrorBoundary>
-  )
-}
-
-export default App
+export default App;

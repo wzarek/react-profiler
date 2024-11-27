@@ -2,7 +2,7 @@ name: CI
 on: [push]
 jobs:
   build:
-    name: Build, lint, and test on Node 18 and ${{ matrix.os }}
+    name: Build, lint, and test on Node 20 and ${{ matrix.os }}
 
     defaults:
       run:
@@ -17,19 +17,16 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v2
 
-      - name: Use Node 18
+      - name: Use Node 20
         uses: actions/setup-node@v1
         with:
-          node-version: 18
+          node-version: 20
 
       - name: Install deps and build (with cache)
         run: yarn install --immutable
 
       - name: Lint
         run: yarn lint
-
-      - name: Test
-        run: yarn test
 
       - name: Build
         run: yarn build

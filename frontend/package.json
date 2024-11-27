@@ -9,7 +9,8 @@
     "lint": "yarn workspaces run lint",
     "lint:fix": "yarn workspaces run lint:fix",
     "build": "yarn workspaces run build",
-    "test": "yarn workspaces run test"
+    "test": "yarn workspaces run test",
+    "dev": "yarn workspace react-profiler-test-app dev"
   },
   "workspaces": [
     "packages/react-profiling-tool",
