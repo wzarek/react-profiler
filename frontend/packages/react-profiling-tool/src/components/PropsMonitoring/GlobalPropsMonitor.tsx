@@ -2,11 +2,12 @@ import React, {
   cloneElement,
   FC,
   isValidElement,
-  Profiler,
+  PropsWithChildren,
   ReactNode,
   useMemo,
+  Profiler,
 } from 'react';
-import { PropsWithChildren } from 'react';
+import { sendData } from '../../utils/api';
 import { Monitor } from './Monitor';
 
 const GlobalPropsMonitor: FC<PropsWithChildren> = ({ children }) => {
@@ -18,6 +19,16 @@ const GlobalPropsMonitor: FC<PropsWithChildren> = ({ children }) => {
         3
       )} ms, Phase: ${phase}`
     );
+
+    sendData(
+      {
+        event_type: 'mount',
+        location: id,
+        time_taken: actualDuration,
+        title: `Component ${id} rendered`,
+        description:`Component ${id} rendered in ${actualDuration.toFixed(2)} ms, Phase: ${phase}`,
+      }
+    )
   };
 
   const handlePropChange = (
@@ -75,7 +86,7 @@ const GlobalPropsMonitor: FC<PropsWithChildren> = ({ children }) => {
         name = type;
       }
 
-      if (props && props.children) {
+      if (props?.children) {
         // todo: make key unique
         children = cloneElement(
           children,
