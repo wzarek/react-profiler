@@ -36,15 +36,13 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
       this.props.onError(error, info);
     }
 
-    sendData(
-      {
-        event_type: 'error',
-        location: 'ErrorBoundary',
-        time_taken: 0,
-        title: `Error in ErrorBoundary: ${error.message}`,
-        description: `Error in ErrorBoundary: ${error.message}, ${info.componentStack}`,
-      }
-    );
+    sendData({
+      event_type: 'error',
+      location: 'ErrorBoundary',
+      time_taken: 0,
+      title: `Error in ErrorBoundary: ${error.message}`,
+      description: `Error in ErrorBoundary: ${error.message}, ${info.componentStack}`,
+    });
   }
 
   render() {

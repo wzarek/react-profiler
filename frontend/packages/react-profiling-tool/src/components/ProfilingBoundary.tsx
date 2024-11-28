@@ -20,15 +20,15 @@ const ProfilingBoundary: FC<PropsWithChildren> = ({ children }) => {
       )} ms, Phase: ${phase}`
     );
 
-    sendData(
-      {
-        event_type: 'mount',
-        location: id,
-        time_taken: actualDuration,
-        title: `Component ${id} rendered`,
-        description:`Component ${id} rendered in ${actualDuration.toFixed(2)} ms, Phase: ${phase}`,
-      }
-    )
+    sendData({
+      event_type: 'mount',
+      location: id,
+      time_taken: actualDuration,
+      title: `Component ${id} rendered`,
+      description: `Component ${id} rendered in ${actualDuration.toFixed(
+        2
+      )} ms, Phase: ${phase}`,
+    });
   };
 
   return (
