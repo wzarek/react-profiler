@@ -20,11 +20,6 @@ const App: React.FC = () => (
         <main>
           <ErrorBoundary
             fallback={<ErrrorFallback />}
-            onError={(error, info) =>
-              window.alert(
-                `Error: ${error.message}\nStack: ${info.componentStack}`
-              )
-            }
           >
             <Routes>
               <Route

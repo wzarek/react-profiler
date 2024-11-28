@@ -6,6 +6,10 @@ class AnalyticsEventCreate(BaseModel):
     session_id: str
     title: str
     event_type: str
+    os_name: str
+    os_version: str
+    browser_name: str
+    browser_version: str
     timestamp: datetime
     location: Optional[str] = None
     time_taken: Optional[float] = None

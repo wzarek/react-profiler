@@ -1,4 +1,5 @@
 import React, { ReactElement, Component } from 'react';
+import { sendData } from '../utils/api';
 
 type ErrorInfo = {
   componentStack: string;
@@ -34,6 +35,14 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
     if (this.props.onError) {
       this.props.onError(error, info);
     }
+
+    sendData({
+      event_type: 'error',
+      location: 'ErrorBoundary',
+      time_taken: 0,
+      title: `Error in ErrorBoundary: ${error.message}`,
+      description: `Error in ErrorBoundary: ${error.message}, ${info.componentStack}`,
+    });
   }
 
   render() {
