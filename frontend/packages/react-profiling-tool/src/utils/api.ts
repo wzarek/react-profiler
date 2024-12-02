@@ -39,6 +39,8 @@ const prepareData = async (
 export const sendData = async (data: AnalyticsEventSimplified) => {
   const preparedData = await prepareData(data);
 
+  console.log('Sending data:', preparedData);
+
   try {
     const response = await fetch(`${API_URL}/events`, {
       method: 'POST',

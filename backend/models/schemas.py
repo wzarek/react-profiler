@@ -22,9 +22,11 @@ class AnalyticsEventResponse(AnalyticsEventCreate):
         orm_mode = True
 
 class Outlier(BaseModel):
-    id: int
+    title: str
     session_id: str
     event_type: str
     time_taken: float
-    avg_time_taken: float
-    stddev_time_taken: float
+    location: Optional[str] = None
+
+class EventResponse(AnalyticsEventCreate):
+    is_outlier: bool

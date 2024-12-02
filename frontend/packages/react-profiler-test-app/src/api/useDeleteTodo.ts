@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient, UseMutationResult } from "react-query";
 import { randomDelay } from "../utils/fakeApi";
 import { Todo } from "../types/todo";
+import { useAsyncProfiledCallback } from "react-profiling-tool";
 
 const deleteTodo = (todoId: number): Promise<number> =>
   new Promise((resolve, reject) => {
@@ -17,7 +18,7 @@ const deleteTodo = (todoId: number): Promise<number> =>
 export const useDeleteTodo = (): UseMutationResult<number, Error, number> => {
   const queryClient = useQueryClient();
 
-  return useMutation(deleteTodo, {
+  return useMutation(useAsyncProfiledCallback(deleteTodo, "useDeleteTodo"), {
     onSuccess: (deletedTodo) => {
       const todos = queryClient.getQueryData<Todo[]>("todos") || [];
       queryClient.setQueryData<Todo[]>(

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useAddTodo } from "../api/useAddTodo";
 import { ArrowSync16Filled } from "@fluentui/react-icons";
 
@@ -12,11 +12,11 @@ const AddTodo: React.FC = () => {
     setText("");
   };
 
-  //const profiledHandleSubmit = useProfiledCallback(handleSubmit);
-
-  if (Math.random() < 0.3) {
-    throw new Error("abc");
-  }
+  useEffect(() => {
+    if (Math.random() < 0.3) {
+      throw new Error("abc");
+    }
+  }, []);
 
   return (
     <div>

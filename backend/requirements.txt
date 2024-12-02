@@ -2,3 +2,6 @@ fastapi
 sqlalchemy
 asyncpg
 uvicorn
+scikit-learn
+pandas
+numpy
