@@ -2,7 +2,7 @@ import { useQuery, UseQueryResult } from "@tanstack/react-query";
 import { EventResponse } from "../types/events";
 
 const getEvents = async (): Promise<EventResponse[]> => {
-  const response = await fetch("http://localhost:8000/events/all");
+  const response = await fetch("http://localhost:8000/events/mad");
 
   if (!response.ok) {
     throw new Error("Failed to fetch events");

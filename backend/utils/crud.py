@@ -39,53 +39,102 @@ async def get_outliers(db: AsyncSession) -> List[Outlier]:
     ]
 
     return outliers
+    
+async def get_all_events_mad(db: AsyncSession) -> List[EventResponse]:
+    query = select(AnalyticsEvent)
+    result = await db.execute(query)
+    events = result.scalars().all()
 
-# async def get_mad_outliers(db: AsyncSession):
-#     query = select(AnalyticsEvent.title, AnalyticsEvent.location, AnalyticsEvent.time_taken, AnalyticsEvent.session_id)
-#     result = await db.execute(query)
-#     data = pd.DataFrame(result.fetchall(), columns=["title", "location", "time_taken"])
+    df = pd.DataFrame([{
+        "session_id": event.session_id,
+        "title": event.title,
+        "event_type": event.event_type,
+        "os_name": event.os_name,
+        "os_version": event.os_version,
+        "browser_name": event.browser_name,
+        "browser_version": event.browser_version,
+        "timestamp": event.timestamp,
+        "location": event.location,
+        "time_taken": event.time_taken,
+        "description": event.description
+    } for event in events])
 
-#     if data.empty or "time_taken" not in data:
-#         return []
+    if not df.empty and "time_taken" in df:
+        median = np.median(df["time_taken"])
+        mad = np.median(np.abs(df["time_taken"] - median))
+        threshold = 3 * mad
+        df["is_outlier"] = np.abs(df["time_taken"] - median) > threshold
+    else:
+        df["is_outlier"] = False
 
-#     median = np.median(data["time_taken"])
-#     mad = np.median(np.abs(data["time_taken"] - median))
-#     threshold = 3 * mad 
+    flagged_events = [
+        EventResponse(
+            session_id=row["session_id"],
+            title=row["title"],
+            event_type=row["event_type"],
+            os_name=row["os_name"],
+            os_version=row["os_version"],
+            browser_name=row["browser_name"],
+            browser_version=row["browser_version"],
+            timestamp=row["timestamp"],
+            location=row["location"],
+            time_taken=row["time_taken"],
+            description=row["description"],
+            is_outlier=row["is_outlier"]
+        )
+        for _, row in df.iterrows()
+    ]
 
-#     data["is_outlier"] = np.abs(data["time_taken"] - median) > threshold
+    return flagged_events
 
-#     outliers = data[data["is_outlier"]]
-#     return outliers.to_dict(orient="records")
 
-# async def get_lof_outliers(db: AsyncSession):
-#     query = select(AnalyticsEvent.title, AnalyticsEvent.location, AnalyticsEvent.time_taken)
-#     result = await db.execute(query)
-#     data = pd.DataFrame(result.fetchall(), columns=["title", "location", "time_taken"])
+async def get_all_events_lof(db: AsyncSession) -> List[EventResponse]:
+    query = select(AnalyticsEvent)
+    result = await db.execute(query)
+    events = result.scalars().all()
 
-#     if data.empty or "time_taken" not in data:
-#         return []
+    df = pd.DataFrame([{
+        "session_id": event.session_id,
+        "title": event.title,
+        "event_type": event.event_type,
+        "os_name": event.os_name,
+        "os_version": event.os_version,
+        "browser_name": event.browser_name,
+        "browser_version": event.browser_version,
+        "timestamp": event.timestamp,
+        "location": event.location,
+        "time_taken": event.time_taken,
+        "description": event.description
+    } for event in events])
 
-#     model = LocalOutlierFactor(n_neighbors=20, contamination=0.05) 
-#     data["is_outlier"] = model.fit_predict(data[["time_taken"]])
+    if not df.empty and "time_taken" in df:
+        model = LocalOutlierFactor(n_neighbors=20, contamination=0.05)
+        df["is_outlier"] = model.fit_predict(df[["time_taken"]]) == -1
+    else:
+        df["is_outlier"] = False
 
-#     outliers = data[data["is_outlier"] == -1]
-#     return outliers.to_dict(orient="records")
+    flagged_events = [
+        EventResponse(
+            session_id=row["session_id"],
+            title=row["title"],
+            event_type=row["event_type"],
+            os_name=row["os_name"],
+            os_version=row["os_version"],
+            browser_name=row["browser_name"],
+            browser_version=row["browser_version"],
+            timestamp=row["timestamp"],
+            location=row["location"],
+            time_taken=row["time_taken"],
+            description=row["description"],
+            is_outlier=row["is_outlier"]
+        )
+        for _, row in df.iterrows()
+    ]
 
-# async def get_isolation_forest_outliers(db: AsyncSession):
-#     query = select(AnalyticsEvent.title, AnalyticsEvent.location, AnalyticsEvent.time_taken)
-#     result = await db.execute(query)
-#     data = pd.DataFrame(result.fetchall(), columns=["title", "location", "time_taken"])
+    return flagged_events
 
-#     if data.empty or "time_taken" not in data:
-#         return []
 
-#     model = IsolationForest(contamination=0.05, random_state=42)
-#     data["is_outlier"] = model.fit_predict(data[["time_taken"]])
-
-#     outliers = data[data["is_outlier"] == -1]
-#     return outliers.to_dict(orient="records")
-
-async def get_all_events(db: AsyncSession) -> List[EventResponse]:
+async def get_all_events_isolation_forest(db: AsyncSession) -> List[EventResponse]:
     query = select(AnalyticsEvent)
     result = await db.execute(query)
     events = result.scalars().all()
