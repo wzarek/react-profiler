@@ -18,7 +18,6 @@ const prepareData = async (
 ): Promise<AnalyticsEvent> => {
   const { pathname, search } = window.location;
   const url = `${pathname}${search}`;
-  const timestamp = new Date().toISOString();
 
   const ua = new UAParser();
   const browser = await ua.getBrowser().withClientHints();
@@ -32,7 +31,7 @@ const prepareData = async (
     os_version: os.version ?? 'Unknown',
     browser_name: browser.name ?? 'Unknown',
     browser_version: browser.version ?? 'Unknown',
-    timestamp,
+    timestamp: Date.now(),
   };
 };
 

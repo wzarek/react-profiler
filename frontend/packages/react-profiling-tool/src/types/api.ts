@@ -10,7 +10,7 @@ export type AnalyticsEvent = {
   session_id: string;
   title: string;
   event_type: AnalyticsEventType;
-  timestamp: string;
+  timestamp: number;
   os_name: string;
   os_version: string;
   browser_name: string;

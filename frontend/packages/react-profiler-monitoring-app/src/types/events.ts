@@ -6,9 +6,11 @@ export type EventResponse = {
   os_version: string;
   browser_name: string;
   browser_version: string;
-  timestamp: string;
+  timestamp: number;
   location: string;
   time_taken: number;
   description: string;
   is_outlier: boolean;
 };
+
+export type AlgorithmType = "mad" | "lof" | "isolation-forest";

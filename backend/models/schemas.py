@@ -10,7 +10,7 @@ class AnalyticsEventCreate(BaseModel):
     os_version: str
     browser_name: str
     browser_version: str
-    timestamp: datetime
+    timestamp: int
     location: Optional[str] = None
     time_taken: Optional[float] = None
     description: Optional[str] = None

@@ -25,7 +25,7 @@ async def startup():
 async def create_event_endpoint(event: AnalyticsEventCreate, db: AsyncSession = Depends(get_db)):
     return await create_event(db, event)
 
-@app.get("/events/all/isolation", response_model=List[EventResponse])
+@app.get("/events/all/isolation-forest", response_model=List[EventResponse])
 async def get_all_events_isolation_endpoint(db: AsyncSession = Depends(get_db)):
     return await get_all_events_isolation_forest(db)
 
