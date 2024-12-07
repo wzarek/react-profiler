@@ -8,6 +8,7 @@ class AnalyticsEvent(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     session_id = Column(String, index=True)
+    user_id = Column(String, index=True)
     title = Column(String)
     event_type = Column(String, index=True)
     os_name = Column(String)

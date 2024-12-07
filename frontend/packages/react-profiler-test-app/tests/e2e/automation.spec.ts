@@ -28,13 +28,15 @@ test.describe("Todo App E2E Tests", () => {
       }
     };
 
-    for (let i = 1; i <= 3; i++) {
+    for (let i = 1; i <= 30; i++) {
       await addTodo(`Test Todo ${i}`);
     }
 
     await page.click("text=Todo List");
 
-    await deleteRandomTodo();
+    for (let i = 1; i <= 10; i++) {
+      await deleteRandomTodo();
+    }
 
     console.log(`[${browserName}] Testing completed.`);
   });

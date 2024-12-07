@@ -11,15 +11,21 @@ import {
   Title,
   Tooltip,
   Legend,
+  LineElement,
+  PointElement,
+  Filler,
 } from "chart.js";
 
 ChartJS.register(
   CategoryScale,
   LinearScale,
   BarElement,
+  LineElement,
+  PointElement,
   Title,
   Tooltip,
-  Legend
+  Legend,
+  Filler
 );
 
 const queryClient = new QueryClient();

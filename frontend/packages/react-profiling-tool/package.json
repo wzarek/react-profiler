@@ -54,6 +54,7 @@
     "typescript": "^5.6.3"
   },
   "dependencies": {
+    "nanoid": "^5.0.9",
     "ua-parser-js": "^2.0.0"
   }
 }

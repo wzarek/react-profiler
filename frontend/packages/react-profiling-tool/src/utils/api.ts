@@ -1,16 +1,21 @@
 /* eslint-disable @typescript-eslint/camelcase */
 import { UAParser } from 'ua-parser-js';
-import { API_URL } from '../consts';
+import {
+  API_URL,
+  STORAGE_SESSION_ID_KEY,
+  STORAGE_USER_ID_KEY,
+} from '../consts';
 import { AnalyticsEvent } from '../types/api';
 
 export type AnalyticsEventSimplified = Omit<
   AnalyticsEvent,
-  | 'session_id'
   | 'timestamp'
   | 'os_name'
   | 'os_version'
   | 'browser_name'
   | 'browser_version'
+  | 'user_id'
+  | 'session_id'
 >;
 
 const prepareData = async (
@@ -25,7 +30,8 @@ const prepareData = async (
 
   return {
     ...data,
-    session_id: localStorage.getItem('session_id') ?? '',
+    user_id: localStorage.getItem(STORAGE_USER_ID_KEY) ?? 'Unknown',
+    session_id: localStorage.getItem(STORAGE_SESSION_ID_KEY) ?? 'Unknown',
     location: data.location ?? url,
     os_name: os.name ?? 'Unknown',
     os_version: os.version ?? 'Unknown',
@@ -37,8 +43,6 @@ const prepareData = async (
 
 export const sendData = async (data: AnalyticsEventSimplified) => {
   const preparedData = await prepareData(data);
-
-  console.log('Sending data:', preparedData);
 
   try {
     const response = await fetch(`${API_URL}/events`, {

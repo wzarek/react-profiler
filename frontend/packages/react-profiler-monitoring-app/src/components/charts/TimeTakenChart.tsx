@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { Bar } from "react-chartjs-2";
+import { Line } from "react-chartjs-2";
 import { EventResponse } from "../../types/events";
 import { useFilteredEvents } from "../../hooks/useFilteredEvents";
 
@@ -41,6 +41,10 @@ const TimeTakenChart: FC<Props> = ({ data, lastUpdatedAt }) => {
     labels,
     datasets: [
       {
+        fill: {
+          target: "origin",
+          above: "rgba(255,205,0,0.4)",
+        },
         label: "Time Taken (ms)",
         data: values,
         backgroundColor: backgroundColors,
@@ -63,7 +67,7 @@ const TimeTakenChart: FC<Props> = ({ data, lastUpdatedAt }) => {
   return (
     <div className="max-h-[60vh]">
       <h2 className="py-6 text-xl font-semibold">Time taken chart</h2>
-      <Bar data={chartData} options={options} />
+      <Line data={chartData} options={options} />
     </div>
   );
 };

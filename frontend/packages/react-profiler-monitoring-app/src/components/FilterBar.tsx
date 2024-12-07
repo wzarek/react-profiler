@@ -11,12 +11,12 @@ export const FilterBar: FC<FilterBarProps> = ({ eventTypes, locations }) => {
   const { filters, setFilters } = useFilterStore();
 
   return (
-    <div className="flex flex-wrap gap-4 items-center p-4 bg-gray-50 border border-gray-200 rounded-lg">
+    <div className="flex flex-wrap gap-4 items-center p-4 bg-neutral-800 rounded-lg">
       <div className="flex flex-col space-y-1">
         <span className="text-sm font-medium">Timestamp From</span>
         <input
           type="number"
-          className="border border-gray-300 rounded py-1 px-2"
+          className="bg-neutral-900 rounded py-1 px-2"
           value={filters.timestampFrom ?? ""}
           onChange={(e) =>
             setFilters({
@@ -29,7 +29,7 @@ export const FilterBar: FC<FilterBarProps> = ({ eventTypes, locations }) => {
         <span className="text-sm font-medium">Timestamp To</span>
         <input
           type="number"
-          className="border border-gray-300 rounded py-1 px-2"
+          className="bg-neutral-900 rounded py-1 px-2"
           value={filters.timestampTo ?? ""}
           onChange={(e) =>
             setFilters({
@@ -54,7 +54,7 @@ export const FilterBar: FC<FilterBarProps> = ({ eventTypes, locations }) => {
         <span className="text-sm font-medium">Title</span>
         <input
           type="text"
-          className="border border-gray-300 rounded py-1 px-2"
+          className=" rounded py-1 px-2 bg-neutral-900"
           value={filters.titleQuery}
           onChange={(e) => setFilters({ titleQuery: e.target.value })}
         />

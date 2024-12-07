@@ -1,6 +1,6 @@
 from statistics import mean, stdev
 from typing import List
-from models.schemas import EventResponse, Outlier
+from models.schemas import EventResponse
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from models.models import AnalyticsEvent
@@ -15,30 +15,6 @@ async def create_event(db: AsyncSession, event_data) -> AnalyticsEvent:
     await db.commit()
     await db.refresh(new_event)
     return new_event
-
-async def get_outliers(db: AsyncSession) -> List[Outlier]:
-    stmt = select(AnalyticsEvent)
-    result = await db.execute(stmt)
-    events = result.scalars().all()
-
-    time_taken_values = [event.time_taken for event in events]
-
-    avg_time_taken = mean(time_taken_values)
-    stddev_time_taken = stdev(time_taken_values)
-
-    outliers = [
-        Outlier(
-            title = event.title,
-            location = event.location,
-            session_id=event.session_id,
-            event_type=event.event_type,
-            time_taken=event.time_taken,
-        )
-        for event in events
-        if abs(event.time_taken - avg_time_taken) > 2 * stddev_time_taken
-    ]
-
-    return outliers
     
 async def get_all_events_mad(db: AsyncSession) -> List[EventResponse]:
     query = select(AnalyticsEvent)
@@ -47,6 +23,7 @@ async def get_all_events_mad(db: AsyncSession) -> List[EventResponse]:
 
     df = pd.DataFrame([{
         "session_id": event.session_id,
+        "user_id": event.user_id,
         "title": event.title,
         "event_type": event.event_type,
         "os_name": event.os_name,
@@ -70,6 +47,7 @@ async def get_all_events_mad(db: AsyncSession) -> List[EventResponse]:
     flagged_events = [
         EventResponse(
             session_id=row["session_id"],
+            user_id=row["user_id"],
             title=row["title"],
             event_type=row["event_type"],
             os_name=row["os_name"],
@@ -95,6 +73,7 @@ async def get_all_events_lof(db: AsyncSession) -> List[EventResponse]:
 
     df = pd.DataFrame([{
         "session_id": event.session_id,
+        "user_id": event.user_id,
         "title": event.title,
         "event_type": event.event_type,
         "os_name": event.os_name,
@@ -116,6 +95,7 @@ async def get_all_events_lof(db: AsyncSession) -> List[EventResponse]:
     flagged_events = [
         EventResponse(
             session_id=row["session_id"],
+            user_id=row["user_id"],
             title=row["title"],
             event_type=row["event_type"],
             os_name=row["os_name"],
@@ -141,6 +121,7 @@ async def get_all_events_isolation_forest(db: AsyncSession) -> List[EventRespons
 
     df = pd.DataFrame([{
         "session_id": event.session_id,
+        "user_id": event.user_id,
         "title": event.title,
         "event_type": event.event_type,
         "os_name": event.os_name,
@@ -162,6 +143,7 @@ async def get_all_events_isolation_forest(db: AsyncSession) -> List[EventRespons
     flagged_events = [
         EventResponse(
             session_id=row["session_id"],
+            user_id=row["user_id"],
             title=row["title"],
             event_type=row["event_type"],
             os_name=row["os_name"],

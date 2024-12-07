@@ -18,7 +18,7 @@ export const useGetEvents = (
       return response.json();
     },
     staleTime: 30000,
-    // refetchInterval: 30000,
+    refetchInterval: 30000,
     retry: 2,
   });
 };

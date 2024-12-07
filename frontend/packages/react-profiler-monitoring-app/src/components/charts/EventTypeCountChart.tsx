@@ -39,7 +39,7 @@ const EventTypeCountChart: React.FC<Props> = ({ data }) => {
   };
 
   return (
-    <div className="max-h-[60vh]">
+    <div className="max-h-[20vh]">
       <h2 className="py-6 text-xl font-semibold">Number of Events per Type</h2>
       <Bar data={chartData} options={options} />
     </div>

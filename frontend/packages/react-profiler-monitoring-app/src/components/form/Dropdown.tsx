@@ -19,15 +19,15 @@ export const Dropdown: FC<DropdownProps> = ({
       <span className="text-sm font-medium">{label}</span>
       <Listbox value={value} onChange={onChange}>
         <div className="relative w-48">
-          <Listbox.Button className="w-full rounded border border-gray-300 bg-white p-1 text-left focus:outline-none">
+          <Listbox.Button className="w-full rounded bg-neutral-900 p-1 text-left focus:outline-none">
             {value || "All"}
           </Listbox.Button>
-          <Listbox.Options className="absolute z-10 mt-1 w-full rounded border border-gray-200 bg-white shadow-lg focus:outline-none">
+          <Listbox.Options className="absolute z-10 mt-1 w-full rounded bg-neutral-900 shadow-lg focus:outline-none">
             <Listbox.Option key="" value={null}>
               {({ active }) => (
                 <div
                   className={`cursor-pointer py-2 px-3 ${
-                    active ? "bg-blue-100" : ""
+                    active ? "bg-neutral-700" : ""
                   }`}
                 >
                   All
@@ -41,7 +41,7 @@ export const Dropdown: FC<DropdownProps> = ({
                   {({ active }) => (
                     <div
                       className={`cursor-pointer py-2 px-3 ${
-                        active ? "bg-blue-100" : ""
+                        active ? "bg-neutral-700" : ""
                       }`}
                     >
                       {option}

@@ -3,7 +3,7 @@ from fastapi import FastAPI, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 from utils.database import engine, Base, get_db
 from utils.crud import create_event, get_all_events_mad, get_all_events_isolation_forest, get_all_events_lof
-from models.schemas import AnalyticsEventCreate, AnalyticsEventResponse, EventResponse, Outlier
+from models.schemas import AnalyticsEventCreate, AnalyticsEventResponse, EventResponse
 from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()

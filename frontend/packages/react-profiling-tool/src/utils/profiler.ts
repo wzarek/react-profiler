@@ -13,10 +13,10 @@ export const useSafeProfiledCallback = (callback: () => any, name: string) => {
 
       sendData({
         event_type: 'error',
-        location: 'ErrorBoundary',
+        location: name,
         time_taken: 0,
-        title: `Error in ErrorBoundary: ${message}`,
-        description: `Error in ErrorBoundary: ${message}, ${info}`,
+        title: `Error in ${name}`,
+        description: `Error: ${message}, ${info}`,
       });
     } finally {
       const end = performance.now();
@@ -26,7 +26,8 @@ export const useSafeProfiledCallback = (callback: () => any, name: string) => {
         event_type: 'performance',
         location: name,
         time_taken: timeTaken,
-        title: `Function ${name} finished in ${timeTaken.toFixed(2)} ms`,
+        title: `Function ${name} finished`,
+        description: `Function ${name} finished in ${timeTaken.toFixed(2)} ms`,
       });
     }
   };
@@ -48,10 +49,10 @@ export const useProfiledCallback = <TArgs extends any[], TReturn>(
 
       sendData({
         event_type: 'error',
-        location: 'ErrorBoundary',
+        location: name,
         time_taken: 0,
-        title: `Error in ErrorBoundary: ${message}`,
-        description: `Error in ErrorBoundary: ${message}, ${info}`,
+        title: `Error in ${name}`,
+        description: `Error: ${message}, ${info}`,
       });
 
       throw error;
@@ -63,7 +64,8 @@ export const useProfiledCallback = <TArgs extends any[], TReturn>(
         event_type: 'performance',
         location: name,
         time_taken: timeTaken,
-        title: `Function ${name} finished in ${timeTaken.toFixed(2)} ms`,
+        title: `Function ${name} finished`,
+        description: `Function ${name} finished in ${timeTaken.toFixed(2)} ms`,
       });
     }
   };
@@ -85,10 +87,10 @@ export const useAsyncProfiledCallback = <TArgs extends any[], TReturn>(
 
       sendData({
         event_type: 'error',
-        location: 'ErrorBoundary',
+        location: name,
         time_taken: 0,
-        title: `Error in ErrorBoundary: ${message}`,
-        description: `Error in ErrorBoundary: ${message}, ${info}`,
+        title: `Error in ${name}`,
+        description: `Error: ${message}, ${info}`,
       });
 
       throw error;
@@ -100,7 +102,46 @@ export const useAsyncProfiledCallback = <TArgs extends any[], TReturn>(
         event_type: 'performance',
         location: name,
         time_taken: timeTaken,
-        title: `Function ${name} finished in ${timeTaken.toFixed(2)} ms`,
+        title: `Function ${name} finished`,
+        description: `Function ${name} finished in ${timeTaken.toFixed(2)} ms`,
+      });
+    }
+  };
+};
+
+export const useSafeAsyncProfiledCallback = <TArgs extends any[], TReturn>(
+  callback: (...args: TArgs) => Promise<TReturn>,
+  name: string
+) => {
+  return async (...args: TArgs): Promise<TReturn | null> => {
+    const start = performance.now();
+    try {
+      return await callback(...args);
+    } catch (error) {
+      const message =
+        error instanceof Error ? error.message : 'An unknown error occurred';
+      const info =
+        error instanceof Error ? error.stack : 'No stack trace available';
+
+      sendData({
+        event_type: 'error',
+        location: name,
+        time_taken: 0,
+        title: `Error in ${name}`,
+        description: `Error: ${message}, ${info}`,
+      });
+
+      return null;
+    } finally {
+      const end = performance.now();
+      const timeTaken = end - start;
+
+      sendData({
+        event_type: 'performance',
+        location: name,
+        time_taken: timeTaken,
+        title: `Function ${name} finished`,
+        description: `Function ${name} finished in ${timeTaken.toFixed(2)} ms`,
       });
     }
   };

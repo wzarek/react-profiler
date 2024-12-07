@@ -1,7 +1,7 @@
 import { FC, useMemo } from "react";
-import { EventResponse } from "../types/events";
 import { FlameChartNode } from "flame-chart-js";
 import { FlameChartComponent } from "flame-chart-js/react";
+import { EventResponse } from "../../types/events";
 
 type FlameChartProps = {
   data: EventResponse[];

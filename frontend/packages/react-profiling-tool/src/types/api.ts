@@ -8,6 +8,7 @@ export type AnalyticsEventType =
 
 export type AnalyticsEvent = {
   session_id: string;
+  user_id: string;
   title: string;
   event_type: AnalyticsEventType;
   timestamp: number;
