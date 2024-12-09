@@ -8,6 +8,7 @@ from sklearn.ensemble import IsolationForest
 import pandas as pd
 import numpy as np
 from sklearn.neighbors import LocalOutlierFactor
+import time
 
 async def create_event(db: AsyncSession, event_data) -> AnalyticsEvent:
     new_event = AnalyticsEvent(**event_data.dict())
@@ -17,7 +18,8 @@ async def create_event(db: AsyncSession, event_data) -> AnalyticsEvent:
     return new_event
     
 async def get_all_events_mad(db: AsyncSession) -> List[EventResponse]:
-    query = select(AnalyticsEvent)
+    start_time = time.time_ns() // 1_000_000
+    query = select(AnalyticsEvent).limit(10000).order_by(AnalyticsEvent.timestamp.desc())
     result = await db.execute(query)
     events = result.scalars().all()
 
@@ -63,11 +65,18 @@ async def get_all_events_mad(db: AsyncSession) -> List[EventResponse]:
         for _, row in df.iterrows()
     ]
 
+    end_time = time.time_ns() // 1_000_000
+    print(f"Time taken: {end_time - start_time} ms")
+    num_outliers = len(df[df["is_outlier"] == True])
+    print(f"Outliers count: {num_outliers}")
+
+    flagged_events = flagged_events[::-1]
     return flagged_events
 
 
 async def get_all_events_lof(db: AsyncSession) -> List[EventResponse]:
-    query = select(AnalyticsEvent)
+    start_time = time.time_ns() // 1_000_000
+    query = select(AnalyticsEvent).limit(10000).order_by(AnalyticsEvent.timestamp.desc())
     result = await db.execute(query)
     events = result.scalars().all()
 
@@ -87,7 +96,7 @@ async def get_all_events_lof(db: AsyncSession) -> List[EventResponse]:
     } for event in events])
 
     if not df.empty and "time_taken" in df:
-        model = LocalOutlierFactor(n_neighbors=20, contamination=0.05)
+        model = LocalOutlierFactor(n_neighbors=20)
         df["is_outlier"] = model.fit_predict(df[["time_taken"]]) == -1
     else:
         df["is_outlier"] = False
@@ -111,11 +120,18 @@ async def get_all_events_lof(db: AsyncSession) -> List[EventResponse]:
         for _, row in df.iterrows()
     ]
 
+    end_time = time.time_ns() // 1_000_000
+    print(f"Time taken: {end_time - start_time} ms")
+    num_outliers = len(df[df["is_outlier"] == True])
+    print(f"Outliers count: {num_outliers}")
+
+    flagged_events = flagged_events[::-1]
     return flagged_events
 
 
 async def get_all_events_isolation_forest(db: AsyncSession) -> List[EventResponse]:
-    query = select(AnalyticsEvent)
+    start_time = time.time_ns() // 1_000_000
+    query = select(AnalyticsEvent).limit(10000).order_by(AnalyticsEvent.timestamp.desc())
     result = await db.execute(query)
     events = result.scalars().all()
 
@@ -135,7 +151,7 @@ async def get_all_events_isolation_forest(db: AsyncSession) -> List[EventRespons
     } for event in events])
 
     if not df.empty and "time_taken" in df:
-        model = IsolationForest(contamination=0.05, random_state=42)
+        model = IsolationForest()
         df["is_outlier"] = model.fit_predict(df[["time_taken"]]) == -1
     else:
         df["is_outlier"] = False
@@ -159,4 +175,10 @@ async def get_all_events_isolation_forest(db: AsyncSession) -> List[EventRespons
         for _, row in df.iterrows()
     ]
 
+    end_time = time.time_ns() // 1_000_000
+    print(f"Time taken: {end_time - start_time} ms")
+    num_outliers = len(df[df["is_outlier"] == True])
+    print(f"Outliers count: {num_outliers}")
+
+    flagged_events = flagged_events[::-1]
     return flagged_events

@@ -105,7 +105,6 @@ const GlobalMonitor: FC<PropsWithChildren> = ({ children }) => {
       }
 
       if (props?.children) {
-        // todo: make key unique
         children = cloneElement(
           children,
           children.props,
@@ -117,28 +116,12 @@ const GlobalMonitor: FC<PropsWithChildren> = ({ children }) => {
     return wrapWithMonitor(children, name);
   };
 
-  const logChildren = (children: ReactNode) => {
-    React.Children.forEach(children, child => {
-      // Log the current child
-      console.log(child);
-
-      // If the child has its own children, recursively call logChildren on them
-      if (React.isValidElement(child) && child.props.children) {
-        logChildren(child.props.children);
-      }
-    });
-  };
-
   const wrappedChildren = useMemo(
     () => Children.map(children, child => traverseAndWrap(child)),
     [children]
   );
 
-  console.log('wrappedChildren', wrappedChildren);
-
-  logChildren(children);
-
-  return <SessionDataProvider>{children}</SessionDataProvider>;
+  return <SessionDataProvider>{wrappedChildren}</SessionDataProvider>;
 };
 
 export { GlobalMonitor };

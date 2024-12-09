@@ -57,7 +57,7 @@ const Monitor: FC<MonitorProps> = ({
                       return ch;
                     }
 
-                    return ch.name ?? ch.type ?? 'Unknown';
+                    return ch.type.name ?? ch.type ?? 'Unknown';
                   }
                 );
                 change.to = child.props[key].map((ch: any) => {
