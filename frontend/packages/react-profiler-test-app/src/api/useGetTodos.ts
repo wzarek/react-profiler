@@ -1,6 +1,7 @@
 import { useQuery, UseQueryResult } from "react-query";
 import { Todo } from "../types/todo";
 import { randomDelay } from "../utils/fakeApi";
+import { useAsyncProfiledCallback } from "react-profiling-tool";
 
 const getTodos = (): Promise<Todo[]> =>
   new Promise((resolve, reject) => {
@@ -18,7 +19,7 @@ const getTodos = (): Promise<Todo[]> =>
   });
 
 export const useGetTodos = (): UseQueryResult<Todo[], Error> => {
-  return useQuery("todos", getTodos, {
+  return useQuery("todos", useAsyncProfiledCallback(getTodos, "useGetTodos"), {
     staleTime: 30000,
     retry: 2,
   });

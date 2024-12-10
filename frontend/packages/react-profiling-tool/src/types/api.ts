@@ -8,9 +8,10 @@ export type AnalyticsEventType =
 
 export type AnalyticsEvent = {
   session_id: string;
+  user_id: string;
   title: string;
-  event_type: string;
-  timestamp: string;
+  event_type: AnalyticsEventType;
+  timestamp: number;
   os_name: string;
   os_version: string;
   browser_name: string;

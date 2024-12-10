@@ -1,5 +1,6 @@
 import React, { ReactElement, Component } from 'react';
 import { sendData } from '../utils/api';
+import SessionDataProvider from './SessionDataProvider';
 
 type ErrorInfo = {
   componentStack: string;
@@ -50,7 +51,7 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
       return this.props.fallback ?? <div>Something went wrong.</div>;
     }
 
-    return this.props.children;
+    return <SessionDataProvider>{this.props.children}</SessionDataProvider>;
   }
 }
 

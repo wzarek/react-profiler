@@ -1,3 +1,3 @@
 export * from './components/ErrorBoundary';
-export * from './components/ProfilingBoundary';
-export * from './components/PropsMonitoring/GlobalPropsMonitor';
+export * from './components/Monitor';
+export * from './utils/profiler';

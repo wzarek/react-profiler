@@ -3,6 +3,7 @@ from typing import Optional
 from datetime import datetime
 
 class AnalyticsEventCreate(BaseModel):
+    user_id: str
     session_id: str
     title: str
     event_type: str
@@ -10,7 +11,7 @@ class AnalyticsEventCreate(BaseModel):
     os_version: str
     browser_name: str
     browser_version: str
-    timestamp: datetime
+    timestamp: int
     location: Optional[str] = None
     time_taken: Optional[float] = None
     description: Optional[str] = None
@@ -19,12 +20,7 @@ class AnalyticsEventResponse(AnalyticsEventCreate):
     id: int
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
-class Outlier(BaseModel):
-    id: int
-    session_id: str
-    event_type: str
-    time_taken: float
-    avg_time_taken: float
-    stddev_time_taken: float
+class EventResponse(AnalyticsEventCreate):
+    is_outlier: bool
