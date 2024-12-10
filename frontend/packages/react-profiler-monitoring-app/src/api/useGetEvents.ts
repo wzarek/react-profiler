@@ -15,7 +15,15 @@ export const useGetEvents = (
         throw new Error("Failed to fetch events");
       }
 
-      return response.json();
+      const data = (await response.json()) as EventResponse[];
+
+      data.filter((event) => {
+        const eventDate = new Date(event.timestamp);
+        const today = new Date();
+        const diffTime = Math.abs(today.getTime() - eventDate.getTime());
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+        return diffDays <= 1;
+      });
     },
     staleTime: 30000,
     refetchInterval: 30000,
